@@ -1,0 +1,28 @@
+{
+  "name": "latest-portofolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@react-icons/all-files": "^4.1.0",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@vitejs/plugin-react": "^5.1.3",
+    "framer-motion": "^12.33.0",
+    "lucide-react": "^0.563.0",
+    "react-icons": "^5.5.0",
+    "react-type-animation": "^3.2.0",
+    "vite": "^7.3.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18"
+  }
+}
