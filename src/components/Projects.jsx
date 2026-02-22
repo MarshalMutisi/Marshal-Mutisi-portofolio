@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { AiOutlineGithub, AiOutlineLink } from 'react-icons/ai'
 
 import lingoImg from '../images/lingoacademic.png'
-import selfHealImg from '../images/selfannealing.png'
+import n8nergeticImg from '../images/n8nergetic.png'
 import workflowImg from '../images/workflow.png'
 import learningImg from '../images/learning_path_tracker.png'
 import notesImg from '../images/thinkpad.png'
@@ -57,12 +57,12 @@ const Projects = () => {
         },
 
         {
-            title: 'N8N Self-Annealing System',
+            title: 'N8nergetic AI System',
             description: 'A robust monitoring and self-healing solution for n8n workflows. Uses a Gemini-powered Agentic AI Healer to automatically detect and fix workflow errors.',
             tags: ['n8n', 'AI Agent', 'Gemini API', 'Next.js', 'FastAPI'],
             github: 'https://github.com/MarshalMutisi/N8N-self-annealing',
             link: '#',
-            image: selfHealImg
+            image: n8nergeticImg
         },
         {
             title: 'AI Automation Workflow Suite',
@@ -99,7 +99,7 @@ const Projects = () => {
     ]
 
     return (
-        <div className='max-w-[1200px] mx-auto py-24 px-4' id='projects'>
+        <div className='max-w-[1200px] mx-auto py-12 sm:py-24 px-4' id='projects'>
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -107,7 +107,7 @@ const Projects = () => {
                 transition={{ duration: 0.8 }}
                 className='mb-16'
             >
-                <h2 className='text-4xl font-bold mb-4'>Recent <span className='text-secondary'>Work</span></h2>
+                <h2 className='text-3xl sm:text-4xl font-bold mb-4'>Recent <span className='text-secondary'>Work</span></h2>
                 <div className='w-20 h-1 bg-secondary rounded-full'></div>
             </motion.div>
 

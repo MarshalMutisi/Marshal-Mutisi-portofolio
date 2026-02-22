@@ -29,7 +29,7 @@ const Contact = () => {
     };
 
     return (
-        <div className='max-w-[1200px] mx-auto py-24 px-4' id='contact'>
+        <div className='max-w-[1200px] mx-auto py-12 sm:py-24 px-4' id='contact'>
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -37,7 +37,7 @@ const Contact = () => {
                 transition={{ duration: 0.8 }}
                 className='text-center mb-16'
             >
-                <h2 className='text-4xl font-bold mb-4'>Get In <span className='text-secondary'>Touch</span></h2>
+                <h2 className='text-3xl sm:text-4xl font-bold mb-4'>Get In <span className='text-secondary'>Touch</span></h2>
                 <p className='text-tertiary max-w-[600px] mx-auto'>
                     I'm always open to new opportunities and collaborations. Feel free to reach out!
                 </p>
@@ -48,7 +48,7 @@ const Contact = () => {
                     initial={{ opacity: 0, x: -30 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className='flex-1 glass p-8 rounded-2xl w-full'
+                    className='flex-1 glass p-6 sm:p-8 rounded-2xl w-full'
                 >
                     <h3 className='text-2xl font-bold mb-6'>Contact Information</h3>
                     <div className='space-y-6'>
@@ -58,7 +58,7 @@ const Contact = () => {
                             </div>
                             <div>
                                 <p className='text-sm text-tertiary uppercase tracking-wider'>Email</p>
-                                <p className='text-lg font-medium'>mutisimarshal@gmail.com</p>
+                                <p className='text-lg font-medium break-all'>mutisimarshal@gmail.com</p>
                             </div>
                         </div>
                         <div className='flex items-center gap-4 group'>

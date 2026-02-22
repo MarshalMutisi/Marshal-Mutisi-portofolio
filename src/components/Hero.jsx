@@ -5,16 +5,16 @@ import { AiOutlineGithub, AiOutlineLinkedin, AiOutlineMail } from 'react-icons/a
 
 const Hero = () => {
     return (
-        <div className='max-w-[1200px] mx-auto h-[90vh] flex flex-col-reverse md:flex-row justify-center items-center gap-12' id='home'>
+        <div className='max-w-[1200px] mx-auto min-h-screen py-12 md:py-0 flex flex-col-reverse md:flex-row justify-center items-center gap-12' id='home'>
             <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
                 className='flex-1 text-center md:text-left'
             >
-                <p className='text-secondary font-mono mb-4 text-xl'>Hi, my name is</p>
-                <h1 className='text-5xl sm:text-7xl font-bold mb-4'>Marshal Mutisi</h1>
-                <h2 className='text-4xl sm:text-6xl font-bold text-tertiary mb-8'>
+                <p className='text-secondary font-mono mb-4 text-lg sm:text-xl'>Hi, my name is</p>
+                <h1 className='text-4xl sm:text-7xl font-bold mb-4'>Marshal Mutisi</h1>
+                <h2 className='text-3xl sm:text-6xl font-bold text-tertiary mb-8'>
                     I'm an{' '}
                     <TypeAnimation
                         sequence={[
@@ -54,7 +54,7 @@ const Hero = () => {
                 transition={{ duration: 0.8 }}
                 className='flex-1 flex justify-center'
             >
-                <div className='relative w-[300px] h-[300px] sm:w-[450px] sm:h-[450px] shadow-2xl shadow-secondary/10 rounded-full overflow-hidden border-4 border-secondary/20'>
+                <div className='relative w-[250px] h-[250px] sm:w-[450px] sm:h-[450px] shadow-2xl shadow-secondary/10 rounded-full overflow-hidden border-4 border-secondary/20'>
                     <div className='w-full h-full bg-gradient-to-br from-[#0a192f] via-[#112240] to-secondary/20 flex items-center justify-center'>
                         <motion.div
                             animate={{ y: [0, -20, 0] }}

@@ -33,7 +33,7 @@ const Skills = () => {
     ]
 
     return (
-        <div className='max-w-[1200px] mx-auto py-24 px-4' id='about'>
+        <div className='max-w-[1200px] mx-auto py-12 sm:py-24 px-4' id='about'>
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}

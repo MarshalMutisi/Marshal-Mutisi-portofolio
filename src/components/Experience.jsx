@@ -19,7 +19,7 @@ const Experience = () => {
     ]
 
     return (
-        <div className='max-w-[1200px] mx-auto py-24 px-4' id='experience'>
+        <div className='max-w-[1200px] mx-auto py-12 sm:py-24 px-4' id='experience'>
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -27,7 +27,7 @@ const Experience = () => {
                 transition={{ duration: 0.8 }}
                 className='mb-16'
             >
-                <h2 className='text-4xl font-bold mb-4'>Professional <span className='text-secondary'>Experience</span></h2>
+                <h2 className='text-3xl sm:text-4xl font-bold mb-4'>Professional <span className='text-secondary'>Experience</span></h2>
                 <div className='w-20 h-1 bg-secondary rounded-full'></div>
             </motion.div>
 
@@ -39,7 +39,7 @@ const Experience = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: index * 0.2 }}
-                        className='glass p-8 rounded-2xl border border-white/10 hover:border-secondary/30 transition-all duration-300'
+                        className='glass p-6 sm:p-8 rounded-2xl border border-white/10 hover:border-secondary/30 transition-all duration-300'
                     >
                         <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6'>
                             <div className='flex items-center gap-4'>
