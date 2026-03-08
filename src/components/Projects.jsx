@@ -52,16 +52,16 @@ const Projects = () => {
             description: 'A premium agentic pipeline for English-German academic research. Features a 3-agent system (Librarian, Writer, Professor) with automatic model fallback.',
             tags: ['Next.js', 'FastAPI', 'Gemini AI', 'Multi-Agent', 'Python'],
             github: 'https://github.com/MarshalMutisi/LingoAcademic-AI',
-            link: '#',
+            link: 'https://lingoacademic-ai.onrender.com',
             image: lingoImg
         },
 
         {
-            title: 'N8nergetic AI System',
+            title: 'n8n AGENTIC HEALER',
             description: 'A robust monitoring and self-healing solution for n8n workflows. Uses a Gemini-powered Agentic AI Healer to automatically detect and fix workflow errors.',
             tags: ['n8n', 'AI Agent', 'Gemini API', 'Next.js', 'FastAPI'],
             github: 'https://github.com/MarshalMutisi/N8N-self-annealing',
-            link: '#',
+            link: 'https://n8n-self-annealing.onrender.com',
             image: n8nergeticImg
         },
         {
