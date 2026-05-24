@@ -2,6 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { AiOutlineGithub, AiOutlineLink } from 'react-icons/ai'
 
+import cvCopilotImg from '../images/cv-copilot.png'
 import lingoImg from '../images/lingoacademic.png'
 import n8nergeticImg from '../images/n8nergetic.png'
 import workflowImg from '../images/workflow.png'
@@ -47,6 +48,14 @@ const ProjectCard = ({ title, description, tags, github, link, image }) => (
 
 const Projects = () => {
     const projects = [
+        {
+            title: 'CV Copilot',
+            description: 'AI-powered job application assistant with three core features: a RAG-based CV knowledge base (ask natural language questions about your own resume), an AI job match analyzer that scores fit, surfaces skill gaps, and writes a tailored cover letter, and an application tracker dashboard with pipeline stats. Built with a FastAPI + Next.js single-container architecture — the frontend is compiled as a static export at build time and served directly by the Python backend. The embedding model runs via ONNX Runtime instead of PyTorch, keeping the full app under 512MB RAM for free-tier deployment.',
+            tags: ['Next.js', 'FastAPI', 'LangChain', 'RAG', 'Groq', 'Supabase', 'pgvector', 'Docker'],
+            github: 'https://github.com/MarshalMutisi/CV-Copilot',
+            link: 'https://cv-copilot-2.onrender.com',
+            image: cvCopilotImg
+        },
         {
             title: 'LingoAcademic AI',
             description: 'A premium agentic pipeline for English-German academic research. Features a 3-agent system (Librarian, Writer, Professor) with automatic model fallback.',
