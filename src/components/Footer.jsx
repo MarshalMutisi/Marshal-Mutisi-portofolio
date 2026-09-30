@@ -1,25 +1,36 @@
 import React from 'react'
+import { ArrowUp } from 'lucide-react'
+import { profile } from '../data'
+import { SocialLinks } from './ui'
+import { scrollToId } from '../lib/lenis'
 
-const Footer = () => {
-    return (
-        <footer className='max-w-[1200px] mx-auto py-12 px-4 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6'>
-            <div className='text-center md:text-left'>
-                <h2 className='text-2xl font-bold text-secondary mb-2'>PORTFOLIO</h2>
-                <p className='text-tertiary text-sm'>Building the future, one pixel at a time.</p>
+const Footer = () => (
+    <footer className='border-t border-line'>
+        <div className='mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between'>
+            <div>
+                <div className='flex items-center gap-2.5'>
+                    <span className='grid size-8 place-items-center rounded-lg bg-accent font-mono text-sm font-semibold text-white'>
+                        MM
+                    </span>
+                    <span className='font-medium text-fg'>{profile.name}</span>
+                </div>
+                <p className='mt-3 text-sm text-subtle'>
+                    © {new Date().getFullYear()} {profile.name}. All rights reserved.
+                </p>
             </div>
 
-            <div className='flex gap-8 text-tertiary text-sm'>
-                <a href="#home" className='hover:text-secondary transition-colors'>Home</a>
-                <a href="#about" className='hover:text-secondary transition-colors'>About</a>
-                <a href="#projects" className='hover:text-secondary transition-colors'>Projects</a>
-                <a href="#contact" className='hover:text-secondary transition-colors'>Contact</a>
+            <div className='flex items-center gap-2'>
+                <SocialLinks />
+                <button
+                    onClick={() => scrollToId('home')}
+                    aria-label='Back to top'
+                    className='grid size-10 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-line-strong hover:bg-white/5 hover:text-fg'
+                >
+                    <ArrowUp size={18} />
+                </button>
             </div>
-
-            <p className='text-tertiary text-sm'>
-                © {new Date().getFullYear()} Marshal Mutisi. All rights reserved.
-            </p>
-        </footer>
-    )
-}
+        </div>
+    </footer>
+)
 
 export default Footer

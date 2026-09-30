@@ -1,136 +1,151 @@
-import React, { useState } from 'react'
-import { AiOutlineClose, AiOutlineMenu, AiOutlineGithub, AiOutlineLinkedin, AiOutlineMail, AiOutlineHome, AiOutlineUser, AiOutlineCode, AiOutlineSend, AiOutlineThunderbolt } from 'react-icons/ai'
+import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Menu, X, ArrowUpRight } from 'lucide-react'
+import { navLinks, profile } from '../data'
+import { SocialLinks } from './ui'
+import { getLenis, scrollToId } from '../lib/lenis'
+
+const useActiveSection = (ids) => {
+    const [active, setActive] = useState(null)
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) setActive(entry.target.id)
+                })
+            },
+            { rootMargin: '-45% 0px -50% 0px' }
+        )
+        ids.forEach((id) => {
+            const el = document.getElementById(id)
+            if (el) observer.observe(el)
+        })
+        return () => observer.disconnect()
+    }, [ids])
+
+    return active
+}
+
+const sectionIds = ['home', ...navLinks.map((l) => l.id)]
 
 const Navbar = () => {
-    const [nav, setNav] = useState(false)
+    const [open, setOpen] = useState(false)
+    const [scrolled, setScrolled] = useState(false)
+    const active = useActiveSection(sectionIds)
 
-    const handleNav = () => {
-        setNav(!nav)
-    }
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 12)
+        onScroll()
+        window.addEventListener('scroll', onScroll, { passive: true })
+        return () => window.removeEventListener('scroll', onScroll)
+    }, [])
 
-    const navLinks = [
-        { title: 'Home', path: '#home', icon: <AiOutlineHome /> },
-        { title: 'About', path: '#about', icon: <AiOutlineUser /> },
-        { title: 'Experience', path: '#experience', icon: <AiOutlineThunderbolt /> },
-        { title: 'Projects', path: '#projects', icon: <AiOutlineCode /> },
-        { title: 'Contact', path: '#contact', icon: <AiOutlineSend /> },
-    ]
-
-    const menuVariants = {
-        open: {
-            x: 0,
-            transition: {
-                type: 'spring',
-                stiffness: 100,
-                damping: 20,
-                staggerChildren: 0.1,
-                delayChildren: 0.2
-            }
-        },
-        closed: {
-            x: '100%',
-            transition: {
-                type: 'spring',
-                stiffness: 100,
-                damping: 20,
-                staggerChildren: 0.05,
-                staggerDirection: -1
-            }
+    useEffect(() => {
+        const lenis = getLenis()
+        if (open) {
+            lenis?.stop()
+            document.body.style.overflow = 'hidden'
+        } else {
+            lenis?.start()
+            document.body.style.overflow = ''
         }
-    }
+    }, [open])
 
-    const itemVariants = {
-        open: { opacity: 1, x: 0 },
-        closed: { opacity: 0, x: 50 }
+    const go = (e, id) => {
+        e.preventDefault()
+        setOpen(false)
+        scrollToId(id)
     }
 
     return (
-        <div className={`fixed left-0 top-0 w-full ${nav ? 'z-[100] bg-[#0a192f]' : 'z-50 glass'} h-[80px] px-4 sm:px-12 flex justify-between items-center text-white transition-all duration-300`}>
-            <motion.h1
-                initial={{ opacity: 0, x: -25 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-                className='text-2xl sm:text-3xl font-bold text-secondary cursor-pointer tracking-tighter'
-            >
-                MARSHAL
-            </motion.h1>
+        <header
+            className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+                scrolled || open ? 'border-b border-line bg-bg/75 backdrop-blur-xl' : 'border-b border-transparent'
+            }`}
+        >
+            <nav className='mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6'>
+                <a href='#home' onClick={(e) => go(e, 'home')} className='flex items-center gap-2.5'>
+                    <span className='grid size-8 place-items-center rounded-lg bg-accent font-mono text-sm font-semibold text-white'>
+                        MM
+                    </span>
+                    <span className='font-medium tracking-tight text-fg'>{profile.name}</span>
+                </a>
 
-            <ul className='hidden md:flex'>
-                {navLinks.map((link, index) => (
-                    <motion.li
-                        key={index}
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className='p-5 cursor-pointer hover:text-secondary transition-colors duration-300'
-                    >
-                        <a href={link.path}>{link.title}</a>
-                    </motion.li>
-                ))}
-            </ul>
+                <ul className='hidden items-center gap-1 md:flex'>
+                    {navLinks.map((link) => (
+                        <li key={link.id} className='relative'>
+                            <a
+                                href={`#${link.id}`}
+                                onClick={(e) => go(e, link.id)}
+                                className={`relative z-10 block px-3.5 py-2 text-sm transition-colors ${
+                                    active === link.id ? 'text-fg' : 'text-muted hover:text-fg'
+                                }`}
+                            >
+                                {link.title}
+                            </a>
+                            {active === link.id && (
+                                <motion.span
+                                    layoutId='nav-pill'
+                                    className='absolute inset-0 rounded-lg bg-white/[0.06]'
+                                    transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                                />
+                            )}
+                        </li>
+                    ))}
+                </ul>
 
-            <div onClick={handleNav} className='z-[110] block md:hidden cursor-pointer p-2 hover:bg-white/10 rounded-lg transition-colors'>
-                {nav ? <AiOutlineClose size={30} className='text-secondary' /> : <AiOutlineMenu size={30} />}
-            </div>
+                <a
+                    href='#contact'
+                    onClick={(e) => go(e, 'contact')}
+                    className='hidden items-center gap-1 rounded-lg bg-fg px-3.5 py-2 text-sm font-medium text-bg transition-colors hover:bg-zinc-200 md:inline-flex'
+                >
+                    Let's talk <ArrowUpRight size={15} />
+                </a>
+
+                <button
+                    onClick={() => setOpen(!open)}
+                    aria-label={open ? 'Close menu' : 'Open menu'}
+                    aria-expanded={open}
+                    className='grid size-10 place-items-center rounded-lg border border-line text-fg md:hidden'
+                >
+                    {open ? <X size={20} /> : <Menu size={20} />}
+                </button>
+            </nav>
 
             <AnimatePresence>
-                {nav && (
+                {open && (
                     <motion.div
-                        variants={menuVariants}
-                        initial='closed'
-                        animate='open'
-                        exit='closed'
-                        className='fixed inset-0 w-full h-screen bg-[#0a192f] z-[100] flex flex-col items-center justify-between py-24 px-8 md:hidden'
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.2 }}
+                        className='h-[calc(100dvh-4rem)] border-t border-line bg-bg px-4 pt-6 pb-10 md:hidden'
                     >
-                        {/* Header for Mobile Menu */}
-                        <div className='absolute top-6 right-6'>
-                            <AiOutlineClose
-                                size={32}
-                                className='cursor-pointer text-secondary hover:rotate-90 transition-transform duration-300'
-                                onClick={() => setNav(false)}
-                            />
-                        </div>
-
-                        <ul className='flex flex-col items-center justify-center gap-10 w-full flex-1'>
-                            {navLinks.map((link, index) => (
+                        <ul className='flex flex-col'>
+                            {navLinks.map((link, i) => (
                                 <motion.li
-                                    key={index}
-                                    variants={itemVariants}
-                                    className='cursor-pointer group flex items-center gap-6'
-                                    onClick={() => setNav(false)}
+                                    key={link.id}
+                                    initial={{ opacity: 0, x: -8 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.04 * i }}
                                 >
-                                    <span className='text-secondary text-3xl group-hover:scale-125 transition-transform duration-300'>
-                                        {link.icon}
-                                    </span>
-                                    <a href={link.path} className='font-bold tracking-[0.2em] group-hover:text-secondary transition-colors uppercase text-2xl'>
+                                    <a
+                                        href={`#${link.id}`}
+                                        onClick={(e) => go(e, link.id)}
+                                        className='flex items-center justify-between border-b border-line py-4 text-2xl font-medium tracking-tight text-fg'
+                                    >
                                         {link.title}
+                                        <span className='font-mono text-xs text-subtle'>0{i + 1}</span>
                                     </a>
                                 </motion.li>
                             ))}
                         </ul>
-
-                        <motion.div
-                            variants={itemVariants}
-                            className='flex flex-col items-center gap-10 w-full mt-auto pb-10'
-                        >
-                            <div className='w-full h-px bg-white/10 max-w-[200px]' />
-                            <div className='flex flex-row items-center justify-center space-x-12 text-tertiary'>
-                                <a href="https://github.com/MarshalMutisi" target="_blank" rel="noreferrer" className='hover:text-secondary transition-all transform hover:scale-125 shrink-0'>
-                                    <AiOutlineGithub size={45} />
-                                </a>
-                                <a href="https://linkedin.com/in/marshal-mutisi-34a07a298" target="_blank" rel="noreferrer" className='hover:text-secondary transition-all transform hover:scale-125 shrink-0'>
-                                    <AiOutlineLinkedin size={45} />
-                                </a>
-                                <a href="mailto:mutisimarshal@gmail.com" className='hover:text-secondary transition-all transform hover:scale-125 shrink-0'>
-                                    <AiOutlineMail size={45} />
-                                </a>
-                            </div>
-                        </motion.div>
+                        <SocialLinks className='mt-8' />
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </header>
     )
 }
 

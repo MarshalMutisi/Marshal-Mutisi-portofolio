@@ -1,118 +1,166 @@
 import React, { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
-import { AiOutlineMail, AiOutlinePhone, AiOutlineLinkedin } from 'react-icons/ai'
 import emailjs from '@emailjs/browser'
+import { toast } from 'sonner'
+import { Mail, Phone, Copy, Check, ArrowRight, Loader2 } from 'lucide-react'
+import { SiLinkedin, SiGithub } from 'react-icons/si'
+import { Section, SectionHeading, Reveal } from './ui'
+import { profile } from '../data'
+
+const inputClass =
+    'w-full rounded-lg border border-line bg-white/[0.02] px-4 py-3 text-sm text-fg placeholder:text-subtle transition-colors focus:border-accent focus:bg-white/[0.04] focus:outline-none'
+
+const Field = ({ label, children }) => (
+    <label className='block'>
+        <span className='mb-1.5 block text-xs font-medium text-muted'>{label}</span>
+        {children}
+    </label>
+)
 
 const Contact = () => {
-    const form = useRef();
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const form = useRef()
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [copied, setCopied] = useState(false)
+
+    const copyEmail = async () => {
+        try {
+            await navigator.clipboard.writeText(profile.email)
+            setCopied(true)
+            toast.success('Email copied to clipboard')
+            setTimeout(() => setCopied(false), 2000)
+        } catch {
+            window.location.href = `mailto:${profile.email}`
+        }
+    }
 
     const sendEmail = (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
+        e.preventDefault()
+        setIsSubmitting(true)
 
-        emailjs.sendForm(
-            import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
-            import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
-            form.current,
-            import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
-        )
-            .then((result) => {
-                alert('Message sent successfully!');
-                form.current.reset();
-            }, (error) => {
-                alert('Failed to send message. Please try again later.');
-            })
-            .finally(() => {
-                setIsSubmitting(false);
-            });
-    };
+        emailjs
+            .sendForm(
+                import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
+                import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
+                form.current,
+                import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
+            )
+            .then(
+                () => {
+                    toast.success("Message sent. I'll get back to you soon.")
+                    form.current.reset()
+                },
+                () => {
+                    toast.error('Message failed to send. Please email me directly.')
+                }
+            )
+            .finally(() => setIsSubmitting(false))
+    }
+
+    const channels = [
+        { icon: SiLinkedin, label: 'LinkedIn', value: 'marshal-mutisi', href: profile.linkedin },
+        { icon: SiGithub, label: 'GitHub', value: 'MarshalMutisi', href: profile.github },
+        { icon: Phone, label: 'Phone', value: profile.phone, href: `tel:${profile.phone.replace(/\s/g, '')}` },
+    ]
 
     return (
-        <div className='max-w-[1200px] mx-auto py-12 sm:py-24 px-4' id='contact'>
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className='text-center mb-16'
-            >
-                <h2 className='text-3xl sm:text-4xl font-bold mb-4'>Get In <span className='text-secondary'>Touch</span></h2>
-                <p className='text-tertiary max-w-[600px] mx-auto'>
-                    I'm always open to new opportunities and collaborations. Feel free to reach out!
-                </p>
-            </motion.div>
+        <Section id='contact'>
+            <SectionHeading
+                eyebrow='05 · Contact'
+                title="Let's build something together."
+                description="I'm open to roles, freelance work and collaborations in AI automation and full-stack development. I usually reply within a day."
+            />
 
-            <div className='flex flex-col md:flex-row gap-12 justify-center items-start'>
-                <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    className='flex-1 glass p-6 sm:p-8 rounded-2xl w-full'
-                >
-                    <h3 className='text-2xl font-bold mb-6'>Contact Information</h3>
-                    <div className='space-y-6'>
-                        <div className='flex items-center gap-4 group'>
-                            <div className='p-4 bg-secondary/10 text-secondary rounded-lg group-hover:bg-secondary group-hover:text-primary transition-all'>
-                                <AiOutlineMail size={24} />
-                            </div>
-                            <div>
-                                <p className='text-sm text-tertiary uppercase tracking-wider'>Email</p>
-                                <p className='text-lg font-medium break-all'>mutisimarshal@gmail.com</p>
-                            </div>
-                        </div>
-                        <div className='flex items-center gap-4 group'>
-                            <div className='p-4 bg-secondary/10 text-secondary rounded-lg group-hover:bg-secondary group-hover:text-primary transition-all'>
-                                <AiOutlinePhone size={24} />
-                            </div>
-                            <div>
-                                <p className='text-sm text-tertiary uppercase tracking-wider'>Phone</p>
-                                <p className='text-lg font-medium'>+263 789 773 927</p>
-                            </div>
-                        </div>
-                        <div className='flex items-center gap-4 group'>
-                            <div className='p-4 bg-secondary/10 text-secondary rounded-lg group-hover:bg-secondary group-hover:text-primary transition-all'>
-                                <AiOutlineLinkedin size={24} />
-                            </div>
-                            <div>
-                                <p className='text-sm text-tertiary uppercase tracking-wider'>LinkedIn</p>
-                                <a
-                                    href="https://linkedin.com/in/marshal-mutisi-34a07a298"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className='text-lg font-medium hover:text-secondary transition-colors'
-                                >
-                                    marshal-mutisi
-                                </a>
-                            </div>
+            <div className='grid gap-6 lg:grid-cols-[1fr_1.2fr]'>
+                <Reveal className='space-y-4'>
+                    <div className='rounded-2xl border border-line bg-surface p-6'>
+                        <p className='font-mono text-[11px] uppercase tracking-wider text-subtle'>Email</p>
+                        <div className='mt-2 flex items-center justify-between gap-3'>
+                            <a
+                                href={`mailto:${profile.email}`}
+                                className='truncate text-lg font-medium text-fg transition-colors hover:text-accent-soft sm:text-xl'
+                            >
+                                {profile.email}
+                            </a>
+                            <button
+                                onClick={copyEmail}
+                                aria-label='Copy email address'
+                                className='grid size-9 shrink-0 place-items-center rounded-lg border border-line text-muted transition-colors hover:bg-white/5 hover:text-fg'
+                            >
+                                {copied ? <Check size={16} className='text-emerald-400' /> : <Copy size={16} />}
+                            </button>
                         </div>
                     </div>
-                </motion.div>
 
-                <motion.div
-                    initial={{ opacity: 0, x: 30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    className='flex-1 w-full'
-                >
-                    <form ref={form} onSubmit={sendEmail} className='space-y-4'>
-                        <div className='flex flex-col sm:flex-row gap-4'>
-                            <input type="text" name="from_name" placeholder='Your Name' required className='flex-1 bg-white/5 border border-white/10 p-4 rounded-lg focus:outline-none focus:border-secondary transition-all' />
-                            <input type="email" name="from_email" placeholder='Your Email' required className='flex-1 bg-white/5 border border-white/10 p-4 rounded-lg focus:outline-none focus:border-secondary transition-all' />
+                    <ul className='divide-y divide-line rounded-2xl border border-line bg-surface'>
+                        {channels.map(({ icon: Icon, label, value, href }) => (
+                            <li key={label}>
+                                <a
+                                    href={href}
+                                    target={href.startsWith('http') ? '_blank' : undefined}
+                                    rel='noreferrer'
+                                    className='group flex items-center gap-4 p-4 transition-colors hover:bg-white/[0.02]'
+                                >
+                                    <span className='grid size-9 place-items-center rounded-lg bg-accent/10 text-accent-soft'>
+                                        <Icon size={16} />
+                                    </span>
+                                    <div className='min-w-0 flex-1'>
+                                        <p className='font-mono text-[11px] uppercase tracking-wider text-subtle'>{label}</p>
+                                        <p className='truncate text-sm text-fg'>{value}</p>
+                                    </div>
+                                    <ArrowRight
+                                        size={16}
+                                        className='text-subtle transition-transform group-hover:translate-x-0.5 group-hover:text-fg'
+                                    />
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </Reveal>
+
+                <Reveal delay={0.08}>
+                    <form
+                        ref={form}
+                        onSubmit={sendEmail}
+                        className='space-y-4 rounded-2xl border border-line bg-surface p-6 sm:p-8'
+                    >
+                        <div className='grid gap-4 sm:grid-cols-2'>
+                            <Field label='Name'>
+                                <input type='text' name='from_name' placeholder='Jane Doe' required className={inputClass} />
+                            </Field>
+                            <Field label='Email'>
+                                <input type='email' name='from_email' placeholder='jane@company.com' required className={inputClass} />
+                            </Field>
                         </div>
-                        <input type="text" name="subject" placeholder='Subject' required className='w-full bg-white/5 border border-white/10 p-4 rounded-lg focus:outline-none focus:border-secondary transition-all' />
-                        <textarea name="message" placeholder='Message' rows="5" required className='w-full bg-white/5 border border-white/10 p-4 rounded-lg focus:outline-none focus:border-secondary transition-all resize-none'></textarea>
+                        <Field label='Subject'>
+                            <input type='text' name='subject' placeholder='Project, role or idea' required className={inputClass} />
+                        </Field>
+                        <Field label='Message'>
+                            <textarea
+                                name='message'
+                                rows='5'
+                                placeholder='Tell me a bit about what you have in mind…'
+                                required
+                                className={`${inputClass} resize-none`}
+                            />
+                        </Field>
                         <button
-                            type="submit"
+                            type='submit'
                             disabled={isSubmitting}
-                            className='w-full py-4 bg-secondary text-primary font-bold rounded-lg hover:bg-[#4ade80] transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed'
+                            className='inline-flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-medium text-white shadow-lg shadow-accent/20 transition-colors hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-60'
                         >
-                            {isSubmitting ? 'Sending...' : 'Send Message'}
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 size={16} className='animate-spin' /> Sending…
+                                </>
+                            ) : (
+                                <>
+                                    Send message <ArrowRight size={16} />
+                                </>
+                            )}
                         </button>
                     </form>
-                </motion.div>
+                </Reveal>
             </div>
-        </div>
+        </Section>
     )
 }
 

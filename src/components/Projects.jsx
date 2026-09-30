@@ -1,140 +1,149 @@
 import React from 'react'
-import { motion } from 'framer-motion'
-import { AiOutlineGithub, AiOutlineLink } from 'react-icons/ai'
+import { ArrowUpRight, Check, Star } from 'lucide-react'
+import { SiGithub } from 'react-icons/si'
+import { Section, SectionHeading, Reveal, Tag } from './ui'
+import { featuredProject as fp, projects } from '../data'
 
-import cvCopilotImg from '../images/cv-copilot.png'
-import lingoImg from '../images/lingoacademic.png'
-import n8nergeticImg from '../images/n8nergetic.png'
-import workflowImg from '../images/workflow.png'
-import learningImg from '../images/learning_path_tracker.png'
-import notesImg from '../images/thinkpad.png'
-import pizzaImg from '../images/pizza.png'
-
-const ProjectCard = ({ title, description, tags, github, link, image }) => (
-    <motion.div
-        whileHover={{ y: -10 }}
-        className='glass rounded-2xl overflow-hidden flex flex-col h-full group'
+const LinkButton = ({ href, primary, children }) => (
+    <a
+        href={href}
+        target='_blank'
+        rel='noreferrer'
+        className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition-colors ${
+            primary ? 'bg-fg text-bg hover:bg-zinc-200' : 'border border-line-strong text-fg hover:bg-white/5'
+        }`}
     >
-        <div className='relative h-[220px] overflow-hidden'>
-            <img
-                src={image}
-                alt={title}
-                className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-110'
-            />
-            <div className='absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4'>
-                <a href={github} target="_blank" rel="noreferrer" className='p-3 bg-primary/80 rounded-full text-secondary hover:bg-secondary hover:text-primary transition-all scale-0 group-hover:scale-100 duration-500'>
-                    <AiOutlineGithub size={24} />
-                </a>
-                {link && link !== '#' && (
-                    <a href={link} target="_blank" rel="noreferrer" className='p-3 bg-primary/80 rounded-full text-secondary hover:bg-secondary hover:text-primary transition-all scale-0 group-hover:scale-100 duration-500 delay-75'>
-                        <AiOutlineLink size={24} />
-                    </a>
-                )}
-            </div>
-        </div>
-        <div className='p-6 flex-1 flex flex-col'>
-            <h3 className='text-2xl font-bold mb-2 text-quaternary'>{title}</h3>
-            <p className='text-tertiary mb-6 flex-1 line-clamp-3'>{description}</p>
-            <div className='flex flex-wrap gap-2'>
-                {tags.map((tag, i) => (
-                    <span key={i} className='text-xs font-mono text-secondary bg-secondary/10 px-2 py-1 rounded border border-secondary/20'>
-                        {tag}
-                    </span>
-                ))}
-            </div>
-        </div>
-    </motion.div>
+        {children}
+    </a>
 )
 
-const Projects = () => {
-    const projects = [
-        {
-            title: 'CV Copilot',
-            description: 'AI-powered job application assistant with three core features: a RAG-based CV knowledge base (ask natural language questions about your own resume), an AI job match analyzer that scores fit, surfaces skill gaps, and writes a tailored cover letter, and an application tracker dashboard with pipeline stats. Built with a FastAPI + Next.js single-container architecture — the frontend is compiled as a static export at build time and served directly by the Python backend. The embedding model runs via ONNX Runtime instead of PyTorch, keeping the full app under 512MB RAM for free-tier deployment.',
-            tags: ['Next.js', 'FastAPI', 'LangChain', 'RAG', 'Groq', 'Supabase', 'pgvector', 'Docker'],
-            github: 'https://github.com/MarshalMutisi/CV-Copilot',
-            link: 'https://cv-copilot-2.onrender.com',
-            image: cvCopilotImg
-        },
-        {
-            title: 'LingoAcademic AI',
-            description: 'A premium agentic pipeline for English-German academic research. Features a 3-agent system (Librarian, Writer, Professor) with automatic model fallback.',
-            tags: ['Next.js', 'FastAPI', 'Gemini AI', 'Multi-Agent', 'Python'],
-            github: 'https://github.com/MarshalMutisi/LingoAcademic-AI',
-            link: 'https://lingoacademic-ai.onrender.com',
-            image: lingoImg
-        },
+const FeaturedProject = () => (
+    <Reveal>
+        <article className='beam-border grid overflow-hidden rounded-2xl border border-line bg-surface lg:grid-cols-2'>
+            <div className='flex flex-col p-6 sm:p-10'>
+                <div className='mb-5 flex flex-wrap items-center gap-3'>
+                    <span className='inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 font-mono text-[11px] text-accent-soft'>
+                        <Star size={12} /> Featured · Latest
+                    </span>
+                    {fp.date && <span className='font-mono text-[11px] text-subtle'>{fp.date}</span>}
+                </div>
+                <h3 className='text-3xl font-semibold tracking-tight text-fg'>{fp.title}</h3>
+                <p className='mt-3 leading-relaxed text-muted'>{fp.summary}</p>
 
-        {
-            title: 'n8n AGENTIC HEALER',
-            description: 'A robust monitoring and self-healing solution for n8n workflows. Uses a Gemini-powered Agentic AI Healer to automatically detect and fix workflow errors.',
-            tags: ['n8n', 'AI Agent', 'Gemini API', 'Next.js', 'FastAPI'],
-            github: 'https://github.com/MarshalMutisi/N8N-self-annealing',
-            link: 'https://n8n-self-annealing.onrender.com',
-            image: n8nergeticImg
-        },
-        {
-            title: 'AI Automation Workflow Suite',
-            description: 'Designed AI-powered automation workflows including customer support using n8n, RAG pipelines, and webhooks.',
-            tags: ['n8n', 'AI Agents', 'RAG', 'APIs'],
-            github: 'https://github.com/marshal-mutisi',
-            link: '#',
-            image: workflowImg
-        },
-        {
-            title: 'Learning Path Tracker',
-            description: 'LMS for developers with authentication, real-time tracking, and analytics. Reduced effort by ~50%.',
-            tags: ['React', 'Next.js', 'Vercel', 'Analytics'],
-            github: 'https://github.com/MarshalMutisi/Learning-Path-Tracker',
-            link: 'https://learning-path-tracker-39yo.vercel.app/',
-            image: learningImg
-        },
-        {
-            title: 'MERN Notes Application',
-            description: 'Full-stack notes app with CRUD, REST API, middleware rate limiting, and responsive design.',
-            tags: ['MongoDB', 'Express', 'React', 'Node'],
-            github: 'https://github.com/MarshalMutisi/Thinkboard',
-            link: 'https://thinkboard-web-lmtz.onrender.com',
-            image: notesImg
-        },
-        {
-            title: 'Next.js 15 Pizza Shop',
-            description: 'Responsive e-commerce platform with authentication, cart management, and user profiles.',
-            tags: ['Next.js 15', 'Tailwind', 'Auth', 'E-commerce'],
-            github: 'https://github.com/MarshalMutisi/slice-hub',
-            link: 'https://slice-hub-one.vercel.app',
-            image: pizzaImg
-        },
-    ]
+                <ul className='mt-6 space-y-3'>
+                    {fp.highlights.map((h) => (
+                        <li key={h} className='flex gap-3 text-sm leading-relaxed text-muted'>
+                            <Check size={16} className='mt-0.5 shrink-0 text-accent-soft' />
+                            {h}
+                        </li>
+                    ))}
+                </ul>
 
-    return (
-        <div className='max-w-[1200px] mx-auto py-12 sm:py-24 px-4' id='projects'>
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className='mb-16'
+                <div className='mt-7 grid grid-cols-3 gap-3'>
+                    {fp.metrics.map((m) => (
+                        <div key={m.label} className='rounded-xl border border-line bg-white/[0.02] p-3'>
+                            <p className='text-xl font-semibold tracking-tight text-fg'>{m.value}</p>
+                            <p className='text-xs text-subtle'>{m.label}</p>
+                        </div>
+                    ))}
+                </div>
+
+                <div className='mt-7 flex flex-wrap gap-2'>
+                    {fp.tags.map((t) => (
+                        <Tag key={t}>{t}</Tag>
+                    ))}
+                </div>
+
+                <div className='mt-8 flex gap-3'>
+                    <LinkButton href={fp.link} primary>
+                        Live demo <ArrowUpRight size={15} />
+                    </LinkButton>
+                    {fp.github && (
+                        <LinkButton href={fp.github}>
+                            <SiGithub size={14} /> Source
+                        </LinkButton>
+                    )}
+                </div>
+            </div>
+
+            <a
+                href={fp.link}
+                target='_blank'
+                rel='noreferrer'
+                className='group relative flex min-h-[260px] items-center overflow-hidden border-t border-line bg-surface-2 py-10 pl-8 sm:pl-10 lg:border-t-0 lg:border-l'
             >
-                <h2 className='text-3xl sm:text-4xl font-bold mb-4'>Recent <span className='text-secondary'>Work</span></h2>
-                <div className='w-20 h-1 bg-secondary rounded-full'></div>
-            </motion.div>
+                <div className='absolute inset-0 bg-linear-to-br from-accent/20 to-transparent' />
+                <img
+                    src={fp.image}
+                    alt={`${fp.title} screenshot`}
+                    className='relative w-[165%] max-w-none rounded-l-xl border border-line-strong shadow-2xl shadow-black/60 transition-transform duration-500 group-hover:-translate-x-3'
+                />
+            </a>
+        </article>
+    </Reveal>
+)
 
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-                {projects.map((project, index) => (
-                    <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: index * 0.2 }}
-                    >
-                        <ProjectCard {...project} />
-                    </motion.div>
+const ProjectCard = ({ title, description, tags, github, link, image }) => (
+    <article className='group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-colors hover:border-line-strong'>
+        <div className='relative aspect-[16/10] overflow-hidden border-b border-line bg-surface-2'>
+            <img
+                src={image}
+                alt={`${title} screenshot`}
+                loading='lazy'
+                className='size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]'
+            />
+        </div>
+        <div className='flex flex-1 flex-col p-6'>
+            <h3 className='text-lg font-semibold tracking-tight text-fg'>{title}</h3>
+            <p className='mt-2 flex-1 text-sm leading-relaxed text-muted'>{description}</p>
+            <div className='mt-5 flex flex-wrap gap-1.5'>
+                {tags.map((t) => (
+                    <Tag key={t}>{t}</Tag>
                 ))}
             </div>
+            <div className='mt-6 flex gap-2'>
+                {link && (
+                    <LinkButton href={link} primary>
+                        Live <ArrowUpRight size={15} />
+                    </LinkButton>
+                )}
+                <LinkButton href={github}>
+                    <SiGithub size={14} /> Code
+                </LinkButton>
+            </div>
         </div>
-    )
-}
+    </article>
+)
+
+const Projects = () => (
+    <Section id='projects'>
+        <SectionHeading
+            eyebrow='04 · Projects'
+            title='Selected work.'
+            description='AI products, automation systems and full-stack apps, all deployed and running.'
+        />
+
+        <FeaturedProject />
+
+        <div className='mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+            {projects.map((p, i) => (
+                <Reveal key={p.title} delay={(i % 3) * 0.06} className='h-full'>
+                    <ProjectCard {...p} />
+                </Reveal>
+            ))}
+        </div>
+
+        <Reveal className='mt-10 text-center'>
+            <a
+                href='https://github.com/MarshalMutisi?tab=repositories'
+                target='_blank'
+                rel='noreferrer'
+                className='inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-fg'
+            >
+                See everything on GitHub <ArrowUpRight size={15} />
+            </a>
+        </Reveal>
+    </Section>
+)
 
 export default Projects
