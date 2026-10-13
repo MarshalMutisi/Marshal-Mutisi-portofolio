@@ -132,8 +132,10 @@ const Hero = () => (
                 </motion.h1>
 
                 <motion.p variants={fadeUp} custom={3} className='mt-6 max-w-xl text-lg leading-relaxed text-muted'>
-                    Computer Science graduate building full-stack and AI-powered applications end to end, from system
-                    design and implementation through testing, evaluation, deployment and monitoring.
+                    Final-year BSc Computer Science student and software developer who ships full-stack, AI-powered
+                    systems end to end, from system design and implementation through testing, evaluation, deployment
+                    and monitoring. Builds production LLM agents and automated workflows, backed by six months of
+                    professional full-stack experience on live client projects.
                 </motion.p>
 
                 <motion.div variants={fadeUp} custom={4} className='mt-10 flex flex-wrap items-center gap-3'>
